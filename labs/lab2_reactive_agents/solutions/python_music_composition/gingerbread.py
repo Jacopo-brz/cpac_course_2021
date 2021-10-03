@@ -1,7 +1,6 @@
     
 import platform
 import sys
-import ctypes, sys
 import time
 import numpy as np
 
@@ -23,22 +22,15 @@ class Gingerbread(Composition):
         return np.clip(value_out, min_out, max_out)
 
     def next(self):
+        self.amp=1
         x_old=self.x
         self.x=1-self.y+abs(self.x)
         self.y=x_old
-        self.midinote=self.map(self.y, 60, 84)
+        self.midinote=int(self.map(self.y, 60, 84))
         self.dur = self.map(self.x, 0.125,1)
         print(self.x, self.y)
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
+        
 if __name__=="__main__":
-    if not is_admin() and "windows" in platform.platform().lower():        
-        # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-
     n_agents=1
     composer=Gingerbread()
     agents=[_ for _ in range(n_agents)]

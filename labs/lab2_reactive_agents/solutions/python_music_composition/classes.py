@@ -56,5 +56,5 @@ class Agent(Thread):
                             self.composer.amp)
             note_sleep(self.composer.BPM, self.composer.dur)
         # silence        
-        self.instr.send("note", self.composer.midinote, 0)
+        self.instrument.send("note", self.composer.midinote, 0)
 

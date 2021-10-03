@@ -1,7 +1,6 @@
     
 import platform
 import sys
-import ctypes, sys
 import time
 
 
@@ -28,16 +27,7 @@ class Simple_Next(Composition):
             if self.midinote==60:
                 self.id = 0
 
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
 if __name__=="__main__":
-    if not is_admin() and "windows" in platform.platform().lower():        
-        # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-
     n_agents=1
     composer=Simple_Next()
     agents=[_ for _ in range(n_agents)]
