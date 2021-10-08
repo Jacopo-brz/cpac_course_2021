@@ -1,4 +1,4 @@
-Mover mover;
+Mover mover; //ball 
 
 void setup() {
   size(800,200);
@@ -13,4 +13,3 @@ void draw() {
   mover.checkEdges();
   mover.display(); 
 }
-

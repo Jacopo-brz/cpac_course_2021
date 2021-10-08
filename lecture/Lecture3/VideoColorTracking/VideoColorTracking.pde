@@ -24,9 +24,9 @@ void draw() {
   int closestX = 0;
   int closestY = 0;
 
-  for (int x = 0; x < video.width; x ++ ) {
-    for (int y = 0; y < video.height; y ++ ) {
-      int loc = x + y*video.width;
+  for (int x = 0; x < video.width; x ++ ) { //column
+    for (int y = 0; y < video.height; y ++ ) { //rows
+      int loc = x + y*video.width; //current location of the pixel
 
       color currentColor = video.pixels[loc];
       float r1 = red(currentColor);
@@ -39,10 +39,10 @@ void draw() {
       // Using euclidean distance to compare colors
       float d = dist(r1, g1, b1, r2, g2, b2); 
 
-      if (d < worldRecord) {
-
-        worldRecord = d;
-        closestX = x;
+      if (d < worldRecord) { //if the distance btw the target color and the current pixel color is small than the threshold
+                             //threshold = smaller "color distance" btw a frame's pixel and the target color
+        worldRecord = d;     //update threshold
+        closestX = x;        //save the current pixel as the closest (wrt its color) to the target color
         closestY = y;
       }
     }
