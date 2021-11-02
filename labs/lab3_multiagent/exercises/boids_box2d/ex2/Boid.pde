@@ -43,7 +43,25 @@ class Boid{
       
       for(Boid other: boids){        
         if(this.body==other.body){continue;}
-        // your code here        
+        
+        otherPosW = other.body.getPosition();
+        otherVel = other.body.getLinearVelocity();
+        direction = otherPosW.sub(myPosW);
+        
+        if(direction.length()<AVOID_DIST){
+          direction.normalize();
+          direction.mulLocal(-4); //-->avoiding force points to the negative of the boid's direction
+          avoid_force.addLocal(direction);
+          //this.defColor = color(100,20,8);
+          //other.defColor = color(100,100,8);
+        }
+        else if (direction.length()<ALIGN_DIST){
+          otherVel.normalize();
+          otherVel.mulLocal(2);
+          align_force.addLocal(otherVel);
+        }
+        
+        
       }
       if(avoid_force.length()>0){this.applyForce(avoid_force);}
       if(align_force.length()>0){this.applyForce(align_force);}

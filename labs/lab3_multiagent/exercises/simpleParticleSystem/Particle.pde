@@ -20,14 +20,15 @@ class Particle{
   }
   
   void draw(){
-    /* your code here*/
+    fill(255,lifespan);
     colorMode(HSB, 255);
     fill(200);
     noStroke();
     ellipse(this.pos.x, this.pos.y, this.radius, this.radius);    
   }
   boolean isDead(){
-    // your code here
+    if(this.lifespan>0)
     return false;
+    else return true;
   }
 }

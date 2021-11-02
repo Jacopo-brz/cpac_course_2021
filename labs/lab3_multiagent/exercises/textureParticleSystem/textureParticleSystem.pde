@@ -1,5 +1,5 @@
 ParticleSystem ps;
-int Nparticles=1000;
+int Nparticles=100;
 PImage img;
 
 AudioIn audio;

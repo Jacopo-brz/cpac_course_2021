@@ -8,7 +8,9 @@ float MASS_TO_PIXEL=0.1;
 float mass_attractor;
 float radius_attractor=100;
 PVector pos_attractor;
-
+//constants
+float alfa = 0.01;
+float Amin = 0.02;
 
 void setup(){
   String path=sketchPath()+"/sounds";
@@ -47,10 +49,11 @@ PVector computeGravityForce(AgentMover mover){
 
 
 int changeAmp(int i){
-  /* your code here instead of this*/
-  float amp=1;
+  //formula distanza
+  float amp = 0;
+  float d = PVector.dist(movers[i].position, pos_attractor);
+  amp = max((1/(1+alfa*d)),Amin);
   samples[i].amp(amp);
-  
   return int(amp*255);
 }
 void draw(){

@@ -22,7 +22,7 @@ class Particle{
   void action(){
     this.planning();    
     imageMode(CENTER);
-    tint(255,255,255, this.lifespan);
+    tint(25,18,250, this.lifespan);
     image(img, this.location.x, this.location.y);
     
   }
