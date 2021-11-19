@@ -92,23 +92,23 @@ if __name__ == "__main__":
 		else:
 			
 			# segment the hand region
-			#hand = segment(gray)
+			hand = segment(gray)
 			
 
 			# check whether hand region is segmented
 			if hand is not None:
 				# if yes, unpack the thresholded image and
 				# segmented region
-				(thresholded, segmented) = hand
+				(thresholded, segmented) = hand	#thresholded is the b/w image, segmented is the contour b-to-w contour
 
 				# draw the segmented region and display the frame
 				cv2.drawContours(clone, [segmented + (right, top)], -1, (0, 0, 255))
 				
 				
 				# Center of the hand
-				#c_x, c_y = detect_palm_center(segmented)
-				#radius = 5
-				#cv2.circle(# image where we draw the circle, # tuple representing center, radius, 0, 1)
+				c_x, c_y = detect_palm_center(segmented)
+				radius = 5
+				cv2.circle(thresholded, (c_x,c_y), radius, 100, 1)
 				
 				cv2.imshow("Thesholded", thresholded)
 
@@ -160,16 +160,18 @@ if __name__ == "__main__":
 			cv2.putText(clone, text, (70, 45), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
 			# Here we send the OSC message corresponding
-			#if START_SOUND:
-				#if class_test == 0:
+			if START_SOUND:
+				
+				if class_test == 0:	#---------------- open palm
 
-					#freq = # FILL THE CODE
-					#amp = # FILL THE CODE
-					#client.send_message(# FILL THE CODE)
-				#else:
-					#detune = # FILL THE CODE
-					#lfo = # FILL THE CODE
-					#client.send_message(# FILL THE CODE)
+					freq = (c_x / width_roi) * 100 #map circle's horizontal position btw 0 and 100 (midinote)
+					amp =  (c_y / height_roi) #map circle's vertical position btw 0 and 1
+					client.send_message('/synth_control', ['a', freq, amp] )	#server address, class, freq, amp
+				
+				else:				#---------------- close fist
+					detune = (c_x/width_roi) * 0.1 # FILL THE CODE
+					lfo = (c_y/height_roi) * 10# FILL THE CODE
+					client.send_message('/synth_control', ['b', detune, lfo] )
 		
 
 		# display the frame with segmented hand

@@ -14,7 +14,7 @@ def run_avg(image, a_weight):
 
     # compute weighted average, accumulate it and update the background
 
-    cv2.accumulateWeighted(image, bg, a_weight)
+    cv2.accumulateWeighted(image, bg, a_weight) #average background and current captured image point-to-point
 
 
 # Segment region of hand in the image
@@ -24,11 +24,11 @@ def segment(image, threshold=25):
 
     # Find the absolute difference between background and current image
     # FILL THE CODE
-    # diff = cv2.absdiff(bg.astype("uint8"), # ....? )
+    diff = cv2.absdiff(bg.astype("uint8"), image)
     
     # Threshold the diff image so that we get the foreground
     # FILL THE CODE
-    #thresholded = cv2.threshold(# ....?, # ....?, 255, cv2.THRESH_BINARY)[1]
+    thresholded = cv2.threshold( diff, threshold, 255, cv2.THRESH_BINARY)[1] 
 
     # get the contours in the thresholded image
 
@@ -40,10 +40,11 @@ def segment(image, threshold=25):
     # HINT: to the max() function you can pass an argument as key 
     #where the iterables are passed and comparison is performed based on its return value (use cv2.contourArea as key)
 
-    # if # FILL the code:
-    #  	FILL the code
-    # else
-    # 	FILL the code
+    if len(cnts)==0: #no contrours detected
+        return None 
+    else:
+        segmented = max(cnts, key=cv2.contourArea) #contour of the image
+        return thresholded, segmented
 
 
     # Detect center of the palm
@@ -51,7 +52,7 @@ def segment(image, threshold=25):
 
 def detect_palm_center(segmented):
     # Find the convex hull of the segmented hand region
-    chull = cv2.convexHull(segmented)
+    chull = cv2.convexHull(segmented) #convex hull = polygon which contain all the set of points, in this case repr by the segm image
 
    
     # Find the most extreme points in the convex hull
@@ -61,6 +62,6 @@ def detect_palm_center(segmented):
     extreme_right = tuple(chull[chull[:, :, 0].argmax()][0])[0]
 
     # Find the center of the palm
-    #c_x = # FILL THE CODE
-    #c_y = # FILL THE CODE 
+    c_x = int((extreme_left + extreme_right) / 2) # FILL THE CODE
+    c_y = int((extreme_bottom + extreme_top) / 2)# FILL THE CODE 
     return c_x, c_y
